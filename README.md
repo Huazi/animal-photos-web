@@ -23,6 +23,8 @@ In addition, you will be adding administrative APIs that allow users to add or d
 
 If you have any questions, require further details or get stuck please do not hesitate to contact Hugh Soong (hugh.soong@rbc.com).
 
+# log history:
+
 ## Requirements
 
 **Core Application**
