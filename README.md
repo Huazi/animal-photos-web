@@ -25,6 +25,8 @@ If you have any questions, require further details or get stuck please do not he
 
 # log history:
 
+1. inital commit
+
 ## Requirements
 
 **Core Application**
