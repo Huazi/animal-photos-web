@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14.0
+    restart: unless-stopped
+    user: postgres
+    environment:
+      - DB_HOST=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports: 
+      - '5433:5432'
+    volumes:
+      - ./data/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./data/seed.sql:/docker-entrypoint-initdb.d/seed_tables.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  app:
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    build:
+      context: ./
+    volumes:
+      - .:/src
+    ports:
+      - '3001:3001'
+    networks:
+      - backend
+    environment:
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+      - DB_PORT=5432
+  
+networks:
+  backend:
