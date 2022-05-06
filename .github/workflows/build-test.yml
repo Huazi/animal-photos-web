@@ -1,0 +1,28 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: docker-compose build
+
+      - name: Run stack
+        run: docker-compose up -d
+
+      - name: Wait
+        run: sleep 30
+
+      - name: Test client
+        run: curl -4 --retry 5 --retry-connrefused http://localhost:3001
