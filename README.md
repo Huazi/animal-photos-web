@@ -1,7 +1,18 @@
 # How to run the project:
 
+## run the app on Docker compose
 Execute the command: docker-compose up
 Please be note, if this docker image has never been started in your docker. The ORM Sequelize normally has a connection issue to the DB. The reason of this issue is that the starting of the api server is faster than the DB connection. Please run the "docker-compose down" to stop the docker container. Then, re-execute the start command.
+
+## run the app in docker container
+1. run postgresql on Docker
+docker run --name postgresqldb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:14.0 -v data/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+
+2. run PGAdmin on Docker
+docker run --name mypgadmin -p 82:80 -e 'PGADMIN_DEFAULT_EMAIL=postgres@domain.local' -e 'PGADMIN_DEFAULT_PASSWORD=postgres'-d dpage/pgadmin4
+
+3. run app on Docker
+
 
 # How to debug projects:
 

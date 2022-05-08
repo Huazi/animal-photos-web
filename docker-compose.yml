@@ -5,14 +5,15 @@ services:
     restart: unless-stopped
     user: postgres
     environment:
-      - DB_HOST=postgres
+      - POSTGRES_DB=testdb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5432:5432' # the first is host port, second is container port.
     volumes:
-      - ./data/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - ./data/seed.sql:/docker-entrypoint-initdb.d/seed_tables.sql
+      - ./data/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      #- ./data/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      #- ./data/seed.sql:/docker-entrypoint-initdb.d/seed_tables.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -34,11 +35,12 @@ services:
     networks:
       - backend
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=testdb
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=postgres
       - DB_PORT=5432
+      - DB_DIALECT=postgres
 
 networks:
   backend:
