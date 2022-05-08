@@ -3,10 +3,10 @@ const expressWinston = require('express-winston');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
-const authRouter = require('./routes/auth');
-const animal_categoriesRouter = require('./routes/animal_categories');
-const animal_photoRouter = require('./routes/animal_photos');
-const db = require("./models");
+const authRouter = require('./app/routes/auth');
+const animal_categoriesRouter = require('./app/routes/animal_categories');
+const animal_photoRouter = require('./app/routes/animal_photos');
+const db = require("./app/models");
 const cors = require("cors");
 
 const createApp = (logger) => {
