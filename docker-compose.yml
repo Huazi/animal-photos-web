@@ -8,8 +8,8 @@ services:
       - DB_HOST=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    ports: 
-      - '5433:5432'
+    ports:
+      - '5432:5432' # the first is host port, second is container port.
     volumes:
       - ./data/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ./data/seed.sql:/docker-entrypoint-initdb.d/seed_tables.sql
@@ -39,6 +39,6 @@ services:
       - DB_PASSWORD=postgres
       - DB_NAME=postgres
       - DB_PORT=5432
-  
+
 networks:
   backend:
