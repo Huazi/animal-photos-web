@@ -18,6 +18,7 @@ module.exports.auth_middleware = function(app) {
   router.post(
     "/signup",
     [
+      check("email", "Email is required").isEmail(),
       verifySignUp.checkDuplicateUsernameOrEmail,
       verifySignUp.checkRolesExisted
     ],
@@ -25,7 +26,6 @@ module.exports.auth_middleware = function(app) {
   );
 
   router.post("/signin",  [
-    check("email", "Email is required").isEmail(),
     check("password", "Password is required").not().isEmpty(),
     validateInput,
   ],

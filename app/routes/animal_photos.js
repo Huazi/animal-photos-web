@@ -1,25 +1,25 @@
 const express = require('express');
 const router = express.Router();
-
+const { authJwt } = require("../middleware");
 const Animal_photos_controller = require('../controllers/animal_photo.controller');
 
-// Create a new Tutorial
-router.post("/", Animal_photos_controller.create);
+// Create a new Photo
+router.post("/", [authJwt.verifyToken], Animal_photos_controller.create);
 
 // Retrieve all Animal_photos
 router.get("/", Animal_photos_controller.findAll);
 
 
-// Retrieve a single Tutorial with id
+// Retrieve a single Photo with id
 router.get("/:id", Animal_photos_controller.findOne);
 
-// Update a Tutorial with id
-router.put("/:id", Animal_photos_controller.update);
+// Update a Photo with id
+router.put("/:id", [authJwt.verifyToken], Animal_photos_controller.update);
 
-// Delete a Tutorial with id
-router.delete("/:id", Animal_photos_controller.delete);
+// Delete a Photo with id
+router.delete("/:id", [authJwt.verifyToken], Animal_photos_controller.delete);
 
-// Delete all Tutorials
-router.delete("/", Animal_photos_controller.deleteAll);
+// Delete all Photos
+router.delete("/",  [authJwt.verifyToken, authJwt.isAdmin], Animal_photos_controller.deleteAll);
 
 module.exports = router;
