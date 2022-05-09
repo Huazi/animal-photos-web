@@ -15,6 +15,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   },
 });
 
+console.log("try to connect to database: " + dbConfig.dialect + " " + dbConfig.HOST+ ":" + dbConfig.port + "/"+ dbConfig.DB + " via user "+ dbConfig.USER);
+
 const db = {};
 
 db.Sequelize = Sequelize;

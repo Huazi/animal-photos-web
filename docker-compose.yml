@@ -11,9 +11,9 @@ services:
     ports:
       - '5432:5432' # the first is host port, second is container port.
     volumes:
-      - ./data/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
-      #- ./data/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      #- ./data/seed.sql:/docker-entrypoint-initdb.d/seed_tables.sql
+      #- ./data/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./data/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./data/seed.sql:/docker-entrypoint-initdb.d/seed_tables.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
