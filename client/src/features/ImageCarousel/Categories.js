@@ -3,7 +3,7 @@ import React from 'react';
 const Categories = (props) => {
     console.log(props.categories);
     return (
-        <div className='container'>
+        <div class="btn-toolbar center" role="toolbar">
             {props.categories && (
                 props.categories.map(item => {
                     return (
@@ -14,7 +14,7 @@ const Categories = (props) => {
                         }}>
                             {item.category}
                         </button>
-                    ) 
+                    )
                 })
             )
             }

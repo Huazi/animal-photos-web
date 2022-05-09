@@ -1,137 +1,162 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
 
-import { register } from "../slices/auth";
-import { clearMessage } from "../slices/message";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import { isEmail } from "validator";
+
+import { register } from "../actions/auth";
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
+  }
+};
+
+const validEmail = (value) => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+
+const vusername = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+
+const vpassword = (value) => {
+  if (value.length < 6 || value.length > 40) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The password must be between 6 and 40 characters.
+      </div>
+    );
+  }
+};
 
 const Register = () => {
+  const form = useRef();
+  const checkBtn = useRef();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
 
-  const { message } = useSelector((state) => state.message);
+  const { message } = useSelector(state => state.message);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(clearMessage());
-  }, [dispatch]);
-
-  const initialValues = {
-    username: "",
-    email: "",
-    password: "",
+  const onChangeUsername = (e) => {
+    const username = e.target.value;
+    setUsername(username);
   };
 
-  const validationSchema = Yup.object().shape({
-    username: Yup.string()
-      .test(
-        "len",
-        "The username must be between 3 and 20 characters.",
-        (val) =>
-          val &&
-          val.toString().length >= 3 &&
-          val.toString().length <= 20
-      )
-      .required("This field is required!"),
-    email: Yup.string()
-      .email("This is not a valid email.")
-      .required("This field is required!"),
-    password: Yup.string()
-      .test(
-        "len",
-        "The password must be between 6 and 40 characters.",
-        (val) =>
-          val &&
-          val.toString().length >= 6 &&
-          val.toString().length <= 40
-      )
-      .required("This field is required!"),
-  });
+  const onChangeEmail = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+  };
 
-  const handleRegister = (formValue) => {
-    const { username, email, password } = formValue;
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
 
     setSuccessful(false);
 
-    dispatch(register({ username, email, password }))
-      .unwrap()
-      .then(() => {
-        setSuccessful(true);
-      })
-      .catch(() => {
-        setSuccessful(false);
-      });
+    form.current.validateAll();
+
+    if (checkBtn.current.context._errors.length === 0) {
+      dispatch(register(username, email, password))
+        .then(() => {
+          setSuccessful(true);
+        })
+        .catch(() => {
+          setSuccessful(false);
+        });
+    }
   };
 
   return (
-    <div className="col-md-12 signup-form">
+    <div className="col-md-12">
       <div className="card card-container">
         <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
         />
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleRegister}
-        >
-          <Form>
-            {!successful && (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <Field name="username" type="text" className="form-control" />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="alert alert-danger"
-                  />
-                </div>
 
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <Field name="email" type="email" className="form-control" />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="alert alert-danger"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <Field
-                    name="password"
-                    type="password"
-                    className="form-control"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="alert alert-danger"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
-                </div>
+        <Form onSubmit={handleRegister} ref={form}>
+          {!successful && (
+            <div>
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="username"
+                  value={username}
+                  onChange={onChangeUsername}
+                  validations={[required, vusername]}
+                />
               </div>
-            )}
-          </Form>
-        </Formik>
-      </div>
 
-      {message && (
-        <div className="form-group">
-          <div
-            className={successful ? "alert alert-success" : "alert alert-danger"}
-            role="alert"
-          >
-            {message}
-          </div>
-        </div>
-      )}
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="email"
+                  value={email}
+                  onChange={onChangeEmail}
+                  validations={[required, validEmail]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <Input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={password}
+                  onChange={onChangePassword}
+                  validations={[required, vpassword]}
+                />
+              </div>
+
+              <div className="form-group">
+                <button className="btn btn-primary btn-block">Sign Up</button>
+              </div>
+            </div>
+          )}
+
+          {message && (
+            <div className="form-group">
+              <div className={ successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+                {message}
+              </div>
+            </div>
+          )}
+          <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        </Form>
+      </div>
     </div>
   );
 };

@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Routes, Route, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 
-import Login from "../components/Login";
-import Register from "../components/Register";
-import Home from "../components/Home";
-import Profile from "../components/Profile";
-import BoardUser from "../components/BoardUser";
-import BoardModerator from "../components/BoardModerator";
-import BoardAdmin from "../components/BoardAdmin";
-import { logout } from "../slices/auth";
+
+import { logout } from "../actions/auth";
+import { clearMessage } from "../actions/message";
+// import AuthVerify from "../common/AuthVerify";
 import EventBus from "../common/EventBus";
+
 
 export const NavBar = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -42,57 +39,61 @@ export const NavBar = () => {
   }, [currentUser, logOut]);
 
     return (
+      <div class="p-1 bg-light mb-4">
+      <h1> <Link to={"/"} className="navbar-brand">
+          Animal Photos Library
+        </Link></h1>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
-          Animal Photos
-        </Link>
           <div className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <Link to={"/home"} className="nav-link">
+                  Home
+                </Link>
+              </li>
+
             <li className="nav-item">
-              <Link to={"/"} className="nav-link">
+              <Link to={"/photosalbums"} className="nav-link">
                 Photos
               </Link>
             </li>
-
-            {showModeratorBoard && (
-            <>
+            {showAdminBoard || showModeratorBoard || currentUser && (
               <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
-                </Link>
-              </li>
-              <li className="nav-item">
-              <Link to={"/photolist"} className="nav-link">
-                Photo Management
-              </Link>
-            </li>
-            </>
+                  <Link to={"/photolist"} className="nav-link">
+                    Photo Management
+                  </Link>
+                </li>
             )}
-
             {showAdminBoard && (
-            <>
               <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin Board
+                <Link to={"/categorylist"} className="nav-link">
+                  Category Management
                 </Link>
               </li>
-              <li className="nav-item">
-              <Link to={"/categorylist"} className="nav-link">
-                Category Management
-              </Link>
-            </li>
-            </>
             )}
-
-
             <li className="nav-item">
               <Link to={"/about"} className="nav-link">
                 About
               </Link>
             </li>
+
+            {showAdminBoard && (
+              <li className="nav-item">
+                <Link to={"/admin"} className="nav-link">
+                  Admin Dashboard
+                </Link>
+              </li>
+            )}
+            {showModeratorBoard && (
+              <li className="nav-item">
+                <Link to={"/mod"} className="nav-link">
+                  Moderator Dashboard
+                </Link>
+              </li>
+            )}
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
-                  User
+                  User Dashboard
                 </Link>
               </li>
             )}
@@ -128,5 +129,6 @@ export const NavBar = () => {
             </div>
           )}
         </nav>
+        </div>
     );
 };

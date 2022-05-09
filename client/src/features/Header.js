@@ -1,8 +1,7 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
 import {NavBar} from './NavBar';
 
-const Header = () => {
+const Header = (): React.MixedElement => {
     return (
       <div className="Header">
         <NavBar></NavBar>

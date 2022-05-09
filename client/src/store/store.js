@@ -1,19 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import PhotoCategoryReducer from '../features/ImageCarousel/ReducerActions/GetCategories';
-import PhotoReducer from '../features/ImageCarousel/ReducerActions/GetPhotos';
-import authReducer from "../slices/auth";
-import messageReducer from "../slices/message";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import rootReducer from "../reducers";
 
-const reducer = {
-  auth: authReducer,
-  message: messageReducer
-};
+const middleware = [thunk];
 
-export const store = configureStore({
-  reducer: {
-    photoCategoriesReducer: PhotoCategoryReducer,
-    photoReducer: PhotoReducer,
-    reducer: reducer,
-    devTools: true,
-  },
-});
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
+
+export default store;
