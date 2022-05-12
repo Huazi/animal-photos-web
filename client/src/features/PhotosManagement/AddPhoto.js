@@ -59,7 +59,7 @@ const AddPhoto = () => {
     <div className="submit-form">
       {submitted ? (
         <div>
-          <h4>You submitted successfully!</h4>
+          <h4 className="alert alert-info">You submitted successfully!</h4>
           <button className="btn btn-success" onClick={newPhoto}>
             Add One More
           </button>
@@ -83,11 +83,11 @@ const AddPhoto = () => {
             <select class="form-control form-control-lg" name='category_id' id='category_id' onChange={handleInputChange}>
             <option>Please choose a category</option>
               {categories && (
-                categories.map(item => { return (<option value={item.id}>{item.category}</option>);})               
+                categories.map(item => { return (<option value={item.id}>{item.category}</option>);})
               )}
             </select>
           </div>
-          
+
           <Link to='/photolist' className="m-3 btn btn-sm btn-secondary">
             Back
           </Link>
