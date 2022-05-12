@@ -1,20 +1,18 @@
 #!/usr/bin/env node
-require('dotenv').config();
+require("dotenv").config();
 
 /**
  * Module dependencies.
  */
 
-const http = require('http');
-const winston = require('winston');
+const http = require("http");
+const winston = require("winston");
 
 const logger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-  ],
+  transports: [new winston.transports.Console()],
 });
 
-const createApp = require('../app');
+const createApp = require("../app");
 
 /**
  * Create app, inject dependencies
@@ -23,8 +21,8 @@ const createApp = require('../app');
 const app = createApp(logger);
 
 /**
-  * Create HTTP server.
-  */
+ * Create HTTP server.
+ */
 
 const server = http.createServer(app);
 
@@ -52,30 +50,28 @@ function normalizePort(val) {
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3001');
-app.set('port', port);
+const port = normalizePort(process.env.PORT || "3001");
+app.set("port", port);
 
 /**
  * Event listener for HTTP server "error" event.
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
+    case "EACCES":
       // eslint-disable-next-line no-console
       logger.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case 'EADDRINUSE':
+    case "EADDRINUSE":
       // eslint-disable-next-line no-console
       logger.error(`${bind} is already in use`);
       process.exit(1);
@@ -91,16 +87,14 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   logger.info(`Listening on ${bind}`);
 }
 
 /**
-  * Listen on provided port, on all network interfaces.
-  */
+ * Listen on provided port, on all network interfaces.
+ */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);

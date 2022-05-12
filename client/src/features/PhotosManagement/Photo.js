@@ -112,8 +112,8 @@ const Photo = props => {
             <select class="form-control form-control-lg" name='category_id' id='category_id' onChange={handleInputChange}>
             <option>Please choose a category</option>
               {categories && (
-                categories.map(item => { 
-                  return (<option value={item.id} selected={(item.id === currentPhoto.category_id)}>{item.category}</option>);})               
+                categories.map(item => {
+                  return (<option value={item.id} selected={(item.id === currentPhoto.category_id)}>{item.category}</option>);})
               )}
             </select>
           </div>
@@ -134,7 +134,7 @@ const Photo = props => {
           <button className="m-3 btn btn-sm btn-danger" onClick={deletePhoto}>
             Delete
           </button>
-          <p>{message}</p>
+          <p className="alert alert-info">{message}</p>
         </div>
       ) : (
         <div>

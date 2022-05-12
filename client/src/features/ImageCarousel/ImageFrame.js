@@ -39,7 +39,7 @@ const ImageFrame = () => {
         }
     };
 
-    
+
     // hook: to retrieve photo categories
     useEffect(()=> {
         if (!isLoading && !categoriesLoaded){
@@ -74,32 +74,33 @@ const ImageFrame = () => {
         });
         setCategoriesState(nstates);
     };
-    
+
     // retrieve the photos basing the categories states
     useEffect(() => {
         if(categoriesState && categoriesState.length > 0){
             const categoryIds = categoriesState.filter(item => item.selected).map(item => item.categoryId);
-            
+
             dispatch(GetPhotos(categoryIds.join(',')));
         }
     }, [categoriesState, dispatch]);
 
     return (
-        <div className='container'>
+        <div className="card">
             <Categories categories={categoriesState} clickEvent={handleCategoryClick} />
 
             {isLoading && (<div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>)}
-
-            <button className="m-3 btn btn-info" onClick={handleLeftClick}> {'<<'} </button>
-            <button className="m-3 btn btn-info" onClick={handleRightClick}> {'>>'} </button>
-            {photoUrls.length>0 && ( 
-                <div>                    
+            <div class="btn-group shadow-0" role="group">
+                <button className="m-3 btn btn-info" onClick={handleLeftClick}> {'<<'} </button>
+                <button className="m-3 btn btn-info" onClick={handleRightClick}> {'>>'} </button>
+            </div>
+            {photoUrls.length>0 && (
+                <div>
                     <img src={photoUrls[index].photo_url} className='img-fluid'/>
                 </div>
             )}
-           
+
         </div>
     );
 };

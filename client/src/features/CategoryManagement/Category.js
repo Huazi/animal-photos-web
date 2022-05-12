@@ -106,7 +106,7 @@ const Category = props => {
           <button className="m-3 btn btn-sm btn-danger" onClick={deleteCategory}>
             Delete
           </button>
-          <p>{message}</p>
+          <p class="alert alert-info">{message}</p>
         </div>
       ) : (
         <div>

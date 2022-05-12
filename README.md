@@ -3,6 +3,8 @@
 Execute the command: docker-compose up
 Please be note, if this docker image has never been started in your docker. The ORM Sequelize normally has a connection issue to the DB. The reason of this issue is that the starting of the api server is faster than the DB connection. Please run the "docker-compose down" to stop the docker container. Then, re-execute the start command.
 
+docker-compose down --rmi all
+
 # How to debug projects:
 
 1. Navigate to the client folder:

@@ -44,7 +44,7 @@ const AddCategory = () => {
     <div className="submit-form">
       {submitted ? (
         <div>
-          <h4>You submitted successfully!</h4>
+          <h4 className="alert alert-info">You submitted successfully!</h4>
           <button className="btn btn-success" onClick={newCategory}>
             Add One More
           </button>
